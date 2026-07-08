@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniJett — Смотри аниме с комфортом</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/img/anj-favicon.png?v=10">
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <div class="app">
+        <!-- ХЕДЕР -->
+        <header class="header-primary">
+            <div class="container header-primary__inner">
+                <a href="/" class="logo" data-nav-link="home">Ani<span>Jett</span></a>
+
+                <nav class="nav-main" id="mainNav">
+                    <ul>
+                        <li><a href="/" data-nav-link="home"><i class="fas fa-home"></i> Главная</a></li>
+                        <li><a href="/anime" data-nav-link="anime"><i class="fas fa-film"></i> Аниме</a></li>
+                        <li><a href="/manga" data-nav-link="manga"><i class="fas fa-book"></i> Манга</a></li>
+                        <li><a href="/bookmarks" data-nav-link="bookmarks"><i class="fas fa-bookmark"></i> Закладки</a></li>
+                    </ul>
+                </nav>
+
+                <div class="user-actions">
+                    <div class="search-wrapper" id="searchWrapper">
+                        <button class="search-toggle-btn" id="searchToggleBtn"><i class="fas fa-search"></i></button>
+                        <div class="search-expanded" id="searchExpanded">
+                            <input type="text" placeholder="Поиск аниме..." id="globalSearchInput" class="global-search-input">
+                            <div class="search-results hidden" id="globalSearchResults"></div>
+                        </div>
+                    </div>
+
+                    <button class="theme-toggle" id="themeToggle" title="Светлая/тёмная тема"><i class="fas fa-moon"></i></button>
+
+                    <div class="notifications-wrapper">
+                        <button class="icon-btn" id="notificationsBtn"><i class="far fa-bell"></i><span class="badge" id="notifBadge">1</span></button>
+                        <div class="notifications-panel hidden" id="notificationsPanel">
+                            <div class="notifications-header"><h4>Уведомления</h4><button class="mark-read" id="markReadBtn">Прочитано</button></div>
+                            <ul class="notifications-list" id="notifList">
+                                <li class="notification-item unread" data-id="1"><i class="fas fa-user"></i><div class="notification-content"><p>Добро пожаловать в AniJett!</p><span class="time">Только что</span></div></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="authBlock"></div>
+
+                    <button class="burger-btn" id="burgerBtn" aria-label="Меню" aria-expanded="false">
+                        <span class="burger-line"></span>
+                        <span class="burger-line"></span>
+                        <span class="burger-line"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- SUB-HEADER АНИМЕ -->
+        <div class="header-secondary" id="animeFiltersHeader" style="display: none;">
+            <div class="container">
+                <div class="sub-tabs">
+                    <button class="sub-tab-btn active" data-anime-tab="all">Все аниме</button>
+                    <button class="sub-tab-btn" data-anime-tab="ongoing"><i class="fas fa-play-circle"></i> Онгоинги</button>
+                    <button class="sub-tab-btn" data-anime-tab="popular"><i class="fas fa-fire"></i> Популярные</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUB-HEADER ЗАКЛАДКИ -->
+        <div class="header-secondary" id="bookmarksFiltersHeader" style="display: none;">
+            <div class="container">
+                <div class="bookmarks-type-tabs">
+                    <button class="type-tab-btn active" data-bm-type="anime"><i class="fas fa-film"></i> Аниме</button>
+                    <button class="type-tab-btn" data-bm-type="manga"><i class="fas fa-book"></i> Манга</button>
+                </div>
+                <div class="bookmark-filters" id="bookmarkFilterRow">
+                    <span class="filter-label">Мои списки:</span>
+                    <ul class="filter-list" id="filterList">
+                        <li class="active"><button class="filter-btn" data-filter="all">Все</button></li>
+                        <li><button class="filter-btn" data-filter="watching">Смотрю</button></li>
+                        <li><button class="filter-btn" data-filter="planned">Буду смотреть</button></li>
+                        <li><button class="filter-btn" data-filter="completed">Просмотрено</button></li>
+                        <li><button class="filter-btn" data-filter="dropped">Брошено</button></li>
+                        <li><button class="filter-btn" data-filter="onhold">Отложено</button></li>
+                        <li><button class="filter-btn" data-filter="notinterested">Не интересно</button></li>
+                        <li><button class="filter-btn" data-filter="favorite">Любимое</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ОСНОВНОЙ КОНТЕНТ -->
+        <main class="main-content container">
+            <!-- ГЛАВНАЯ -->
+            <section class="page-view" id="view-home" data-view="home">
+                <div class="recommendations-section" id="recommendationsSection">
+                    <div class="section-header">
+                        <h2 class="section-title">Рекомендации для вас</h2>
+                        <a href="https://boosty.to/anijett.cc" target="_blank" class="support-btn" rel="noopener noreferrer">
+                            <i class="fas fa-heart"></i> Поддержать проект
+                        </a>
+                        <a href="./admin/index.html" target="_blank" class="support-btn" rel="noopener noreferrer">
+                            <i class="fas fa-heart"></i> админ-панель
+                        </a>
+                    </div>
+                    <div class="anime-grid" id="recommendationsGrid"></div>
+                </div>
+                <div class="full-width all-anime-section">
+                    <h2 class="section-title">Все аниме</h2>
+                    <div class="anime-grid" id="homeGrid"></div>
+                </div>
+            </section>
+            <!-- АНИМЕ (все / онгоинги / популярные) -->
+            <section class="page-view" id="view-anime" data-view="anime" style="display:none;">
+                <div class="full-width">
+                    <h2 class="section-title" id="animeSectionTitle">Все аниме</h2>
+                    <div class="anime-grid" id="animePageGrid"></div>
+                </div>
+            </section>
+            <!-- МАНГА -->
+            <section class="page-view" id="view-manga" data-view="manga" style="display:none;">
+                <div class="full-width wip-page">
+                    <div class="wip-icon"><i class="fas fa-tools"></i></div>
+                    <h2 class="wip-title">Страница недоступна</h2>
+                    <p class="wip-desc">Раздел «Манга» сейчас находится в разработке.<br>Совсем скоро здесь появится что-то интересное!</p>
+                </div>
+            </section>
+            <!-- ЗАКЛАДКИ -->
+            <section class="page-view" id="view-bookmarks" data-view="bookmarks" style="display:none;">
+                <div class="full-width">
+                    <h2 class="section-title">Мои закладки <span id="filterNameSpan">(Все)</span></h2>
+                    <div class="anime-grid" id="bookmarksGrid"></div>
+                    <div id="emptyBookmarksMsg" style="display:none; text-align:center; padding:40px; color:var(--text-dim);">
+                        <i class="fas fa-bookmark" style="font-size:48px; margin-bottom:16px; opacity:0.5;"></i>
+                        <p>У вас пока нет закладок.</p>
+                        <p>Добавляйте аниме в закладки, нажимая на значок закладки на карточке.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- ВХОД / РЕГИСТРАЦИЯ -->
+            <section class="page-view" id="view-auth" data-view="auth" style="display:none;">
+                <div class="auth-container" id="authContainer"></div>
+            </section>
+            <!-- ПРОФИЛЬ -->
+            <section class="page-view" id="view-profile" data-view="profile" style="display:none;">
+                <div class="profile-page-wrapper" id="profilePageContainer"></div>
+            </section>
+            <!-- ДЕТАЛИ АНИМЕ -->
+            <section class="page-view" id="view-anime-details" data-view="anime-details" style="display:none;">
+                <div class="full-width anime-details-page"></div>
+            </section>
+            <!-- СТРАНИЦЫ ФУТЕРА (рендерятся внутри SPA) -->
+            <section class="page-view" id="view-footer-page" data-view="footer-page" style="display:none;">
+                <div class="full-width">
+                    <div id="footerPageContent" class="footer-page-content"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ФУТЕР -->
+        <footer class="footer">
+            <div class="container footer__inner">
+                <!-- Бренд-колонка -->
+                <div class="footer__brand">
+                    <a href="/" class="footer__logo" data-nav-link="home">Ani<span>Jett</span></a>
+                    <p class="footer__tagline">Смотри аниме с&nbsp;комфортом — бесплатно, без рекламы, без регистрации.</p>
+                    <a href="https://e.mail.ru/compose/?to=anijett@mail.ru" target="_blank" rel="noopener noreferrer" class="footer__mail">
+                        <i class="fas fa-envelope"></i> anijett@mail.ru
+                    </a>
+                </div>
+
+                <!-- Ссылки -->
+                <div class="footer__links">
+                    <div class="footer__col">
+                        <h4>Политика</h4>
+                        <ul>
+                            <li><a href="/footer/police.html" class="footer-spa-link">Конфиденциальность</a></li>
+                            <li><a href="/footer/data.html" class="footer-spa-link">Обработка данных</a></li>
+                            <li><a href="/footer/cookies.html" class="footer-spa-link">Использование cookies</a></li>
+                            <li><a href="/footer/terms.html" class="footer-spa-link">Польз. соглашение</a></li>
+                            <li><a href="/footer/copyright.html" class="footer-spa-link">Для правообладателей</a></li>
+                            <li><a href="/footer/donations.html" class="footer-spa-link">Пожертвования</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer__col">
+                        <h4>Интересное</h4>
+                        <ul>
+                            <li><a href="/footer/about.html" class="footer-spa-link">О проекте</a></li>
+                            <li><a href="/footer/team.html" class="footer-spa-link">Наша команда</a></li>
+                            <li><a href="/footer/volunteers.html" class="footer-spa-link">Волонтёры</a></li>
+                            <li><a href="/footer/plans.html" class="footer-spa-link">Планы развития</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer__col">
+                        <h4>Тех. Поддержка</h4>
+                        <ul>
+                            <li><a href="https://e.mail.ru/compose/?to=anijett@mail.ru&subject=Проблема&body=Здравствуйте!%0D%0A%0D%0AС уважением,%0D%0A[Ваше имя]" target="_blank" rel="noopener noreferrer">Написать в поддержку</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer__col">
+                        <h4>Сотрудничество</h4>
+                        <ul>
+                            <li><a href="/footer/cooperation.html" class="footer-spa-link">Офиц. партнёрство</a></li>
+                        </ul>
+                        <h4 style="margin-top:20px;">Вопросы и Ответы</h4>
+                        <ul>
+                            <li><a href="/footer/faq.html" class="footer-spa-link">FAQ</a></li>
+                            <li><a href="https://forms.yandex.ru/u/69e3757849af470017a80fd6" target="_blank" rel="noopener noreferrer">Предложить идею</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer__bottom container">
+                <p>© 2025 AniJett. Все права защищены. Все товарные знаки являются собственностью соответствующих правообладателей.</p>
+                <p class="footer__joke">Сайт сверстан за пачку доширака&nbsp;🍜&nbsp;— поддержи проект!</p>
+            </div>
+        </footer>
+
+    <!-- ПОПАП ЗАКЛАДКИ -->
+    <div class="bookmark-popup hidden" id="bookmarkPopup">
+        <div class="popup-header"><h4>Добавить в список</h4><button class="popup-close" id="popupCloseBtn">&times;</button></div>
+        <ul class="popup-list" id="popupStatusList">
+            <li data-status="watching"><i class="fas fa-play"></i> Смотрю</li>
+            <li data-status="planned"><i class="fas fa-clock"></i> Буду смотреть</li>
+            <li data-status="completed"><i class="fas fa-check-circle"></i> Просмотрено</li>
+            <li data-status="dropped"><i class="fas fa-times-circle"></i> Брошено</li>
+            <li data-status="onhold"><i class="fas fa-pause-circle"></i> Отложено</li>
+            <li data-status="notinterested"><i class="fas fa-thumbs-down"></i> Не интересно</li>
+            <li data-status="favorite"><i class="fas fa-heart"></i> Любимое</li>
+        </ul>
+        <button class="popup-remove" id="popupRemoveBtn">Удалить из закладок</button>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ЖАЛОБЫ -->
+    <div class="report-modal hidden" id="reportModal">
+        <div class="report-container">
+            <div class="report-header"><h3>Отправить жалобу на <span id="reportTargetName">«cryorfear»</span></h3><button class="report-close" id="reportCloseBtn">&times;</button></div>
+            <div class="report-body">
+                <div class="report-section"><h4>Причина</h4><ul class="report-reasons" id="reportReasonsList"><li data-reason="spoiler">Спойлер</li><li data-reason="insult">Оскорбление пользователей</li><li data-reason="flood">Флуд, то есть не несет никакой пользы</li><li data-reason="spam">Реклама / Спам</li><li data-reason="forbidden">Запрещенный / непотребный контент</li><li data-reason="obscene">Ненормативная лексика</li></ul></div>
+                <div class="report-section"><label for="reportComment">Комментарий (необязательно)</label><textarea id="reportComment" rows="3" placeholder="Дополнительная информация..." style="resize: none;"></textarea></div>
+                <div class="report-auth-warning hidden" id="reportAuthWarning"><i class="fas fa-exclamation-circle"></i> Для отправки жалобы необходимо авторизоваться</div>
+            </div>
+            <div class="report-footer"><button class="report-btn secondary" id="reportCancelBtn">Отмена</button><button class="report-btn primary" id="reportSubmitBtn" disabled>Отправить</button></div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО "НА КОФЕ" -->
+    <div class="coffee-modal hidden" id="coffeeModal">
+        <div class="coffee-container">
+            <div class="coffee-header">
+                <h2>☕ На кофе!</h2>
+                <p>Поддержи проект, если нравится. Мы не пьём кофе — мы едим доширак, но кофе звучит лучше :)</p>
+            </div>
+            <div class="coffee-footer">
+                <button class="coffee-btn secondary" id="coffeeHideForever">Больше не показывать</button>
+                <a href="https://boosty.to/anijett.cc" target="_blank" class="coffee-btn primary">На кофе!</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- КНОПКА НАВЕРХ -->
+    <button class="scroll-top-btn" id="scrollTopBtn"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- ПЛАШКА COOKIES -->
+    <div class="cookies-banner" id="cookiesBanner">
+        <div class="cookies-content">
+            <i class="fas fa-cookie-bite"></i>
+            <p>Мы используем cookies для улучшения работы сайта. Продолжая, вы соглашаетесь с <a href="/policy/cookies.html">Политикой cookies</a>.</p>
+            <div class="cookies-actions">
+                <button class="cookies-btn accept" id="acceptCookies">Принять</button>
+                <button class="cookies-btn decline" id="declineCookies">Отклонить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
+    <script src="/js/api.js?v=4"></script>
+    <script src="/js/script.js?v=14"></script>
+    <!-- PWA регистрация SW -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+    </script>
+</body>
+</html>

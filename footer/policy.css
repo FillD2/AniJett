@@ -1,0 +1,267 @@
+/* ======================== ОБЩИЕ СТИЛИ СТРАНИЦ ПОЛИТИКИ ======================== */
+
+.policy-main {
+    min-height: calc(100vh - 70px - 260px);
+    padding: 48px 24px 64px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.policy-card {
+    background: #16161c;
+    border: 1px solid #2a2a35;
+    border-radius: 20px;
+    padding: 48px 52px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+}
+
+.policy-card h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #eaeef2;
+    margin: 0 0 16px;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.policy-lead {
+    font-size: 15px;
+    color: #9aa5b5;
+    line-height: 1.7;
+    margin: 0 0 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #2a2a35;
+}
+
+.policy-card h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #eaeef2;
+    margin: 28px 0 10px;
+    letter-spacing: -0.2px;
+}
+
+.policy-card p {
+    font-size: 14px;
+    color: #9aa5b5;
+    line-height: 1.75;
+    margin: 0 0 12px;
+}
+
+.policy-card a {
+    color: #ff5e57;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.policy-card a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.policy-updated {
+    margin-top: 32px !important;
+    padding-top: 20px;
+    border-top: 1px solid #2a2a35;
+    font-size: 13px !important;
+    color: #555 !important;
+}
+
+/* Highlight box */
+.policy-highlight {
+    background: rgba(255,94,87,0.07);
+    border: 1px solid rgba(255,94,87,0.2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 20px 0;
+}
+.policy-highlight p {
+    margin: 0;
+    color: #c8cdd5 !important;
+    font-size: 14px;
+}
+
+/* Lists */
+.policy-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.policy-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: #9aa5b5;
+    line-height: 1.6;
+}
+.policy-list li i {
+    margin-top: 3px;
+    flex-shrink: 0;
+    color: #ff5e57;
+    width: 16px;
+    text-align: center;
+}
+
+/* Contact block */
+.policy-contact-block {
+    background: #1a1a22;
+    border: 1px solid #2a2a35;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.policy-contact-block p {
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #c8cdd5 !important;
+}
+.policy-contact-block i {
+    color: #ff5e57;
+    width: 16px;
+}
+
+/* FAQ */
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0 0 24px;
+}
+.faq-item {
+    border-radius: 10px;
+    overflow: hidden;
+}
+.faq-q {
+    font-size: 15px;
+    font-weight: 600;
+    color: #eaeef2;
+    padding: 14px 16px;
+    background: #1a1a22;
+    border: 1px solid #2a2a35;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1px;
+    cursor: default;
+}
+.faq-q i {
+    color: #ff5e57;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+.faq-a {
+    font-size: 14px;
+    color: #9aa5b5;
+    padding: 12px 16px 14px 38px;
+    line-height: 1.7;
+    border: 1px solid #2a2a35;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    background: #13131a;
+    margin-bottom: 8px;
+}
+
+/* Team cards */
+.team-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 8px 0 24px;
+}
+.team-card-new {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: #1a1a22;
+    border: 1px solid #2a2a35;
+    border-radius: 14px;
+    padding: 20px 24px;
+    transition: border-color 0.2s;
+}
+.team-card-new:hover {
+    border-color: rgba(255,94,87,0.3);
+}
+.team-avatar-wrap {
+    flex-shrink: 0;
+}
+.team-avatar-wrap img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #2a2a35;
+}
+.team-info {
+    flex: 1;
+    min-width: 0;
+}
+.team-name-new {
+    font-size: 16px;
+    font-weight: 700;
+    color: #eaeef2;
+    margin-bottom: 4px;
+}
+.team-role-new {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ff5e57;
+    background: rgba(255,94,87,0.1);
+    border: 1px solid rgba(255,94,87,0.2);
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-bottom: 10px;
+}
+.team-info p {
+    font-size: 13px;
+    color: #9aa5b5;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Footer brand column */
+.footer__brand p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+    margin: 8px 0;
+}
+.footer__brand span {
+    font-size: 12px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.footer__brand span i {
+    color: #ff5e57;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .policy-card {
+        padding: 28px 22px;
+    }
+    .policy-card h1 {
+        font-size: 22px;
+    }
+    .team-card-new {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}

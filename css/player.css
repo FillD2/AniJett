@@ -1,0 +1,406 @@
+/* ======================== ANIJETT PLAYER ======================== */
+
+.aniplayer-container {
+    max-width: 1100px;
+    width: 100%;
+    background: #13131a;
+    border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,94,87,0.12);
+    overflow: hidden;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    background: #000;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    cursor: default;
+}
+
+.video-filter-container {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+#youtube-player {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: auto;
+}
+
+/* ── Loading ── */
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 30;
+    color: #eaeef2;
+    gap: 14px;
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.loading-overlay .apl-spin {
+    width: 40px; height: 40px;
+    border: 3px solid rgba(255,94,87,0.2);
+    border-top-color: #ff5e57;
+    border-radius: 50%;
+    animation: aplSpin 0.8s linear infinite;
+}
+.loading-overlay span { font-size: 14px; color: #9aa5b5; }
+@keyframes aplSpin { to { transform: rotate(360deg); } }
+
+/* ── Toast ── */
+.apl-toast {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: rgba(22,22,28,0.92);
+    border: 1px solid #2a2a35;
+    border-radius: 100px;
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #eaeef2;
+    white-space: nowrap;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.22s, transform 0.22s;
+    backdrop-filter: blur(8px);
+}
+.apl-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.apl-toast i { color: #ff5e57; margin-right: 6px; }
+
+/* ── Floating OP/ED skip buttons ── */
+.skip-float-wrap {
+    position: absolute;
+    bottom: 72px;
+    right: 16px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+.skip-float-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(22,22,28,0.92);
+    border: 1px solid rgba(255,94,87,0.35);
+    border-radius: 100px;
+    padding: 9px 18px;
+    color: #eaeef2;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    transition: background 0.18s, border-color 0.18s, transform 0.15s;
+    animation: skipBtnIn 0.22s ease;
+}
+@keyframes skipBtnIn {
+    from { opacity: 0; transform: translateX(12px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+.skip-float-btn:hover {
+    background: rgba(255,94,87,0.18);
+    border-color: #ff5e57;
+    transform: scale(1.03);
+}
+.skip-float-btn i { color: #ff5e57; font-size: 11px; }
+.skip-float-time {
+    font-size: 11px;
+    color: #9aa5b5;
+    font-weight: 400;
+}
+
+/* ── Progress markers (OP/ED on timeline) ── */
+.progress-markers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.pmarker {
+    position: absolute;
+    top: 0; height: 100%;
+    opacity: 0.55;
+    border-radius: 2px;
+}
+.pmarker--op { background: #fbbf24; } /* yellow — OP */
+.pmarker--ed { background: #a78bfa; } /* purple — ED */
+
+/* ── Top panel ── */
+.video-top-panel {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 12px 18px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 80%, transparent 100%);
+    z-index: 15;
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 0.35s, visibility 0.35s;
+    pointer-events: auto;
+}
+.video-top-panel.hidden { opacity: 0; visibility: hidden; }
+
+.top-meta-item {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    background: rgba(0,0,0,0.55);
+    padding: 4px 12px;
+    border-radius: 100px;
+    backdrop-filter: blur(4px);
+}
+.top-meta-item label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #9aa5b5;
+}
+.top-meta-item select {
+    background: transparent;
+    border: none;
+    color: #eaeef2;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+}
+.top-meta-item select option { background: #16161c; color: #eaeef2; }
+
+/* ── Bottom controls ── */
+.video-controls {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+    z-index: 15;
+    backdrop-filter: blur(6px);
+    transition: opacity 0.35s, visibility 0.35s;
+    pointer-events: auto;
+}
+.video-controls.hidden { opacity: 0; visibility: hidden; }
+
+/* Progress bar */
+.progress-bar-full {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    cursor: pointer;
+    position: relative;
+    transition: height 0.15s;
+}
+.progress-bar-full:hover { height: 6px; }
+.progress-filled {
+    width: 0%;
+    height: 100%;
+    background: #ff5e57;
+    position: relative;
+    pointer-events: none;
+    transition: width 0.05s linear;
+    z-index: 2;
+}
+.progress-filled::after {
+    content: '';
+    position: absolute;
+    right: -6px; top: 50%;
+    transform: translateY(-50%);
+    width: 12px; height: 12px;
+    background: #ff5e57;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.15s;
+    box-shadow: 0 0 8px rgba(255,94,87,0.5);
+}
+.progress-bar-full:hover .progress-filled::after { opacity: 1; }
+.progress-bar-full input[type="range"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    z-index: 3;
+}
+
+/* Controls row */
+.controls-inner {
+    padding: 8px 14px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.left-group  { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.right-group { display: flex; align-items: center; gap: 4px; }
+
+.ctrl-btn {
+    background: transparent;
+    border: none;
+    color: #c8cdd5;
+    font-size: 15px;
+    cursor: pointer;
+    width: 34px; height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+.ctrl-btn:hover { background: rgba(255,94,87,0.15); color: #ff5e57; }
+
+/* Volume */
+.compact-volume {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,0,0,0.45);
+    padding: 3px 10px 3px 4px;
+    border-radius: 100px;
+}
+.compact-volume input[type="range"] { width: 80px; }
+
+/* Range inputs */
+input[type="range"] {
+    -webkit-appearance: none;
+    background: rgba(255,255,255,0.18);
+    height: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+input[type="range"]:focus { outline: none; }
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px;
+    background: #ff5e57;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(255,94,87,0.5);
+}
+
+/* Time display */
+.time-display {
+    font-family: 'Inter', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    background: rgba(0,0,0,0.45);
+    padding: 3px 10px;
+    border-radius: 100px;
+    color: #9aa5b5;
+    white-space: nowrap;
+}
+
+/* Settings popup */
+.settings-popup {
+    position: absolute;
+    bottom: 64px;
+    right: 14px;
+    background: #16161c;
+    border: 1px solid #2a2a35;
+    border-radius: 14px;
+    padding: 6px 0;
+    width: 260px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    z-index: 25;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px) scale(0.97);
+    transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+    pointer-events: none;
+}
+.settings-popup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+.settings-item {
+    padding: 9px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #c8cdd5;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.settings-item:last-child { border-bottom: none; }
+
+.toggle-switch-sm {
+    width: 34px; height: 18px;
+    background: #2a2a35;
+    border-radius: 100px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+.toggle-switch-sm.active { background: #ff5e57; }
+.toggle-switch-sm::after {
+    content: '';
+    width: 14px; height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; left: 2px;
+    transition: left 0.2s;
+}
+.toggle-switch-sm.active::after { left: 18px; }
+
+.settings-select {
+    background: #1a1a22;
+    border: 1px solid #2a2a35;
+    padding: 3px 8px;
+    border-radius: 100px;
+    color: #eaeef2;
+    font-size: 12px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s;
+}
+.settings-select:focus { border-color: rgba(255,94,87,0.4); }
+.settings-select option { background: #16161c; }
+
+/* Hotkeys hint */
+.apl-hotkeys-hint {
+    padding: 8px 16px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 4px;
+}
+.apl-hotkeys-hint div {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    .controls-inner { flex-direction: column; align-items: stretch; }
+    .left-group, .right-group { justify-content: space-between; }
+    .compact-volume input[type="range"] { width: 60px; }
+    .settings-popup { right: 8px; bottom: 72px; width: 220px; }
+    .skip-float-wrap { right: 8px; bottom: 80px; }
+    .skip-float-btn { font-size: 12px; padding: 7px 14px; }
+}

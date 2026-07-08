@@ -1,0 +1,20 @@
+{
+    "name": "AniJett",
+    "short_name": "AniJett",
+    "description": "Anime streaming platform",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#0f0f12",
+    "theme_color": "#ff5e57",
+    "lang": "ru",
+    "icons": [
+        {
+            "src": "img/anj-favicon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["entertainment"]
+}

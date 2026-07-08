@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель AniJett — Дашборд</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../img/anj-favicon.png?v=10">
+</head>
+<body class="admin-panel">
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">AniJett <span>Admin</span></div>
+            <nav class="admin-nav">
+                <a href="index.html" class="active"><i class="fas fa-dashboard"></i> Дашборд</a>
+                <a href="anime.html"><i class="fas fa-film"></i> Аниме</a>
+                <a href="users.html"><i class="fas fa-users"></i> Пользователи</a>
+                <a href="comments.html"><i class="fas fa-comments"></i> Комментарии</a>
+                <a href="reports.html"><i class="fas fa-flag"></i> Жалобы</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выход</a>
+            </nav>
+        </aside>
+        <main class="admin-content">
+            <h1>Дашборд</h1>
+            <div class="admin-stats">
+    <div class="stat-card">
+        <i class="fas fa-users"></i>
+        <div class="stat-info">
+            <span>128</span>
+            <span class="stat-label">пользователей</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <i class="fas fa-comments"></i>
+        <div class="stat-info">
+            <span>342</span>
+            <span class="stat-label">комментариев</span>
+        </div>
+    </div>
+    <div class="stat-card warning">
+        <i class="fas fa-flag"></i>
+        <div class="stat-info">
+            <span>7</span>
+            <span class="stat-label">новых жалоб</span>
+        </div>
+    </div>
+    <div class="stat-card">
+        <i class="fas fa-film"></i>
+        <div class="stat-info">
+            <span>24</span>
+            <span class="stat-label">аниме</span>
+        </div>
+    </div>
+</div>
+            <div style="margin-top: 32px;">
+                <h2>Последние комментарии</h2>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">Автор</th>
+                            <th style="width: 200px;">Аниме</th>
+                            <th>Текст</th>
+                            <th style="width: 120px;">Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>AnimeFan42</td><td>Атака Титанов</td><td>Офигенное аниме!</td><td>2 мин. назад</td></tr>
+                        <tr><td>Kirito2000</td><td>Магическая битва</td><td>Жду новые серии</td><td>15 мин. назад</td></tr>
+                        <tr><td>SakuraChan</td><td>Клинок</td><td>Музыка божественная</td><td>1 час назад</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>

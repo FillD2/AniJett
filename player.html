@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Плеер — AniJett</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="img/anj-favicon.png?v=10">
+    <link rel="stylesheet" href="css/player.css">
+    <script src="https://www.youtube.com/iframe_api" async></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body {
+            background: #0f0f12;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="aniplayer-container">
+
+    <!-- Video area -->
+    <div class="video-wrapper" id="videoWrapper">
+
+        <!-- YouTube iframe target -->
+        <div id="youtube-player"></div>
+
+        <!-- HTML5 video (used when src= param is set) -->
+        <video id="html5-player" style="display:none;width:100%;height:100%;background:#000;" preload="metadata"></video>
+
+        <!-- Loading -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="apl-spin"></div>
+            <span>Загрузка...</span>
+        </div>
+
+        <!-- Floating OP/ED skip buttons -->
+        <div class="skip-float-wrap" id="skipFloatWrap">
+            <button class="skip-float-btn" id="skipOpFloat" style="display:none;">
+                <i class="fas fa-forward"></i>
+                <span>Пропустить опенинг</span>
+                <span class="skip-float-time" id="skipOpTime"></span>
+            </button>
+            <button class="skip-float-btn" id="skipEdFloat" style="display:none;">
+                <i class="fas fa-forward"></i>
+                <span>Пропустить эндинг</span>
+                <span class="skip-float-time" id="skipEdTime"></span>
+            </button>
+        </div>
+
+        <!-- Toast notification -->
+        <div class="apl-toast" id="aplToast"></div>
+
+        <!-- Top panel: episode / season / studio selects -->
+        <div class="video-top-panel hidden" id="topPanel">
+            <div class="top-meta-item">
+                <label>Серия</label>
+                <select id="episodeSelectTop">
+                    <option value="1">1</option><option value="2">2</option>
+                    <option value="3">3</option><option value="4">4</option>
+                    <option value="5">5</option><option value="6">6</option>
+                    <option value="7">7</option><option value="8">8</option>
+                    <option value="9">9</option><option value="10">10</option>
+                    <option value="11">11</option><option value="12">12</option>
+                </select>
+            </div>
+            <div class="top-meta-item">
+                <label>Сезон</label>
+                <select id="seasonSelectTop">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            <div class="top-meta-item">
+                <label>Озвучка</label>
+                <select id="studioSelectTop">
+                    <option value="anijett">AniJett</option>
+                    <option value="anilibria">AniLibria</option>
+                    <option value="wakanim">Wakanim</option>
+                    <option value="subs">Субтитры</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Bottom controls -->
+        <div class="video-controls hidden" id="videoControls">
+            <!-- Progress with OP/ED markers -->
+            <div class="progress-bar-full" id="progressBar">
+                <div class="progress-filled" id="progressFilled"></div>
+                <!-- OP/ED markers injected by JS -->
+                <div class="progress-markers" id="progressMarkers"></div>
+                <input type="range" id="progressHidden" min="0" max="100" step="0.1" value="0">
+            </div>
+
+            <!-- Buttons row -->
+            <div class="controls-inner">
+                <div class="left-group">
+                    <button class="ctrl-btn" id="playPauseBtn" title="Воспроизвести (Пробел)">
+                        <i class="fas fa-play"></i>
+                    </button>
+
+                    <div class="compact-volume">
+                        <button class="ctrl-btn" id="muteBtn" title="Без звука (M)">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="70" title="Громкость (↑↓)">
+                    </div>
+
+                    <div class="time-display">
+                        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                    </div>
+                </div>
+
+                <div class="right-group">
+                    <button class="ctrl-btn" id="screenshotBtn" title="Скриншот кадра (K)">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                    <button class="ctrl-btn" id="settingsBtn" title="Настройки">
+                        <i class="fas fa-sliders-h"></i>
+                    </button>
+                    <button class="ctrl-btn" id="fullscreenBtn" title="На весь экран (F)">
+                        <i class="fas fa-expand" id="fullscreenIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings popup -->
+            <div class="settings-popup" id="settingsPopup">
+                <div class="settings-item">
+                    <span>Улучшение цвета</span>
+                    <div class="toggle-switch-sm" id="lightingToggle"></div>
+                </div>
+                <div class="settings-item">
+                    <span>Авто-пропуск ОП/ЭД</span>
+                    <div class="toggle-switch-sm" id="autoSkipToggle"></div>
+                </div>
+                <div class="settings-item">
+                    <span>Скорость</span>
+                    <select class="settings-select" id="playbackSpeedSetting">
+                        <option value="0.5">0.5×</option>
+                        <option value="0.75">0.75×</option>
+                        <option value="1" selected>1×</option>
+                        <option value="1.25">1.25×</option>
+                        <option value="1.5">1.5×</option>
+                        <option value="2">2×</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <span>Качество</span>
+                    <select class="settings-select" id="qualitySelect">
+                        <option value="auto" selected>Авто</option>
+                        <option value="hd1080">1080p</option>
+                        <option value="hd720">720p</option>
+                        <option value="large">480p</option>
+                        <option value="medium">360p</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <span>Для дальтоников</span>
+                    <select class="settings-select" id="colorVisionSelect">
+                        <option value="none" selected>Нет</option>
+                        <option value="protanopia">Протанопия</option>
+                        <option value="deuteranopia">Дейтеранопия</option>
+                        <option value="tritanopia">Тританопия</option>
+                    </select>
+                </div>
+                <div class="apl-hotkeys-hint">
+                    <div>Пробел — пауза/плей</div>
+                    <div>← / → — перемотка 5 сек</div>
+                    <div>↑ / ↓ — громкость ±5</div>
+                    <div>M — без звука</div>
+                    <div>F — полный экран</div>
+                    <div>K — скриншот кадра</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/player.js"></script>
+</body>
+</html>

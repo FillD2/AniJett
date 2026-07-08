@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление аниме — AniJett Admin</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="../img/anj-favicon.png?v=10">
+</head>
+<body class="admin-panel">
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">AniJett <span>Admin</span></div>
+            <nav class="admin-nav">
+                <a href="index.html"><i class="fas fa-dashboard"></i> Дашборд</a>
+                <a href="anime.html" class="active"><i class="fas fa-film"></i> Аниме</a>
+                <a href="users.html"><i class="fas fa-users"></i> Пользователи</a>
+                <a href="comments.html"><i class="fas fa-comments"></i> Комментарии</a>
+                <a href="reports.html"><i class="fas fa-flag"></i> Жалобы</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выход</a>
+            </nav>
+        </aside>
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Аниме</h1>
+                <button class="btn-primary" id="addAnimeBtn"><i class="fas fa-plus"></i> Добавить</button>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Постер</th>
+                        <th>Название</th>
+                        <th>Год</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="animeTableBody">
+                    <!-- Тестовые данные сразу в HTML -->
+                    <tr>
+                        <td>1</td>
+                        <td><img src="../img/posters/aot.jpg" style="width: 40px; height: 60px; object-fit: cover; border-radius: 6px;" onerror="this.src='https://via.placeholder.com/40x60/1a1a20/ff5e57?text=Anime'"></td>
+                        <td>Атака Титанов: Финал</td>
+                        <td>2023</td>
+                        <td>Завершён</td>
+                        <td>
+                            <button class="icon-btn edit-anime" data-id="1"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-anime" data-id="1"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><img src="../img/posters/jjk.jpg" style="width: 40px; height: 60px; object-fit: cover; border-radius: 6px;" onerror="this.src='https://via.placeholder.com/40x60/1a1a20/ff5e57?text=Anime'"></td>
+                        <td>Магическая битва 2</td>
+                        <td>2023</td>
+                        <td>Онгоинг</td>
+                        <td>
+                            <button class="icon-btn edit-anime" data-id="2"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-anime" data-id="2"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><img src="../img/posters/opm.jpg" style="width: 40px; height: 60px; object-fit: cover; border-radius: 6px;" onerror="this.src='https://via.placeholder.com/40x60/1a1a20/ff5e57?text=Anime'"></td>
+                        <td>Ванпанчмен 3</td>
+                        <td>2024</td>
+                        <td>Анонс</td>
+                        <td>
+                            <button class="icon-btn edit-anime" data-id="3"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-anime" data-id="3"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><img src="../img/posters/demonslayer.jpg" style="width: 40px; height: 60px; object-fit: cover; border-radius: 6px;" onerror="this.src='https://via.placeholder.com/40x60/1a1a20/ff5e57?text=Anime'"></td>
+                        <td>Клинок, рассекающий демонов 4</td>
+                        <td>2024</td>
+                        <td>Онгоинг</td>
+                        <td>
+                            <button class="icon-btn edit-anime" data-id="4"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-anime" data-id="4"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><img src="../img/posters/chainsaw.jpg" style="width: 40px; height: 60px; object-fit: cover; border-radius: 6px;" onerror="this.src='https://via.placeholder.com/40x60/1a1a20/ff5e57?text=Anime'"></td>
+                        <td>Человек-бензопила</td>
+                        <td>2022</td>
+                        <td>Завершён</td>
+                        <td>
+                            <button class="icon-btn edit-anime" data-id="5"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-anime" data-id="5"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><img src="../img/posters/innocentpunk.jpg" style="width: 40px; height: 60px; object-fit: cover; border-radius: 6px;" onerror="this.src='https://via.placeholder.com/40x60/1a1a20/ff5e57?text=Anime'"></td>
+                        <td>Невинный панк: Механическая девушка</td>
+                        <td>2025</td>
+                        <td>Вышел</td>
+                        <td>
+                            <button class="icon-btn edit-anime" data-id="6"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-anime" data-id="6"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <!-- Модальное окно добавления/редактирования -->
+    <div class="modal hidden" id="animeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Добавить аниме</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="animeForm">
+                <div class="form-row"><label>Название</label><input type="text" id="title" required></div>
+                <div class="form-row"><label>Постер (URL)</label><input type="text" id="poster"></div>
+                <div class="form-row"><label>Год</label><input type="number" id="year"></div>
+                <div class="form-row"><label>Статус</label><select id="status"><option>Завершён</option><option>Онгоинг</option><option>Анонс</option><option>Вышел</option></select></div>
+                <div class="form-row"><label>Kodik ID</label><input type="text" id="kodik_id" required></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Отмена</button>
+                    <button type="submit" class="btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
